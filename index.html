@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Security Policy Generator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="tag">SMALL ORGANISATION SECURITY TOOL</div>
+      <h1>AI Security Policy Generator</h1>
+      <p>Create a practical starter security policy tailored to your organisation.</p>
+    </header>
+
+    <section class="panel">
+      <h2>Organisation details</h2>
+      {% if error %}<p class="error">{{ error }}</p>{% endif %}
+      <form method="POST">
+        <label>Organisation name *
+          <input name="org_name" placeholder="e.g. Bright Star Solutions" required>
+        </label>
+        <label>Industry / organisation type *
+          <input name="industry" placeholder="e.g. Retail, Education, IT services" required>
+        </label>
+        <label>Number of employees *
+          <input name="employees" type="number" min="1" placeholder="e.g. 15" required>
+        </label>
+        <label>IT / security contact email *
+          <input name="email" type="email" placeholder="it@example.com" required>
+        </label>
+        <label>Devices used *
+          <input name="devices" placeholder="e.g. Windows laptops and Android phones" required>
+        </label>
+        <div class="two">
+          <label>Is remote work allowed?
+            <select name="remote_work"><option>No</option><option>Yes</option></select>
+          </label>
+          <label>Backup frequency
+            <select name="backup"><option>Daily</option><option selected>Weekly</option><option>Not decided</option></select>
+          </label>
+        </div>
+        <label>Do employees receive security training?
+          <select name="training"><option>Yes</option><option>No</option></select>
+        </label>
+        <button type="submit">Generate security policy</button>
+      </form>
+    </section>
+
+    {% if policy %}
+    <section class="panel result">
+      <div class="result-heading">
+        <div><h2>Your generated policy</h2><p>Review and customise before adopting it.</p></div>
+      </div>
+      <pre>{{ policy }}</pre>
+      <form method="POST" action="{{ url_for('download') }}">
+        <input type="hidden" name="policy" value="{{ policy }}">
+        <button type="submit" class="secondary">Download policy (.txt)</button>
+      </form>
+    </section>
+    {% endif %}
+    <footer>Educational project · Review policies with a qualified professional before use.</footer>
+  </main>
+</body>
+</html>
